@@ -2,7 +2,7 @@
 
 //TODO 作者懒,等有时间了在写简介吧...
 
-#简陋的[DEMO](https://github.com/Maxith/SimpleInputLimit/edit/master/demo/demo.html)
+#简陋的[DEMO](https://github.com/Maxith/SimpleInputLimit/demo/demo.html)
 
 #基于以下开源项目
 
