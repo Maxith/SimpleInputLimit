@@ -114,7 +114,7 @@ $(document).on({
         }
     }
 }, '.input-limit-minus');
-
+//浮点数
 $(document).on({
     keypress: function (event) {
         var e = window.event || event,
@@ -138,7 +138,7 @@ $(document).on({
         }
     },
     paste: function (event) {
-        var s = event.originalEvent.event.originalEvent.clipboardData.getData('text');
+        var s = event.originalEvent.clipboardData.getData('text');
         if (!/\D/.test(s)) ;
         this.value = s.replace(/^0*/, '');
         return false;
@@ -158,6 +158,20 @@ $(document).on({
         }
     }
 }, '.input-limit-decimal');
+
+$(document).on({
+    keypress: function (event) {
+        var e = window.event || event,
+            code = e.keyCode || e.which;
+        return (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+    },
+    paste: function (event) {
+        return false;
+    },
+    dragenter: function (event) {
+        return false;
+    }
+}, '.input-limit-letter');
 /**
  * 光标位置判断
  */
