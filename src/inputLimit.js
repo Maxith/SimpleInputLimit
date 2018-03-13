@@ -158,7 +158,61 @@ $(document).on({
         }
     }
 }, '.input-limit-decimal');
+//money
+$(document).on({
+    keypress: function (event) {
+        var e = window.event || event,
+            code = e.keyCode || e.which;
+        if (code == 46) {
+            if (this.value.length < 1) {
+                return false;
+            }
+            if (this.value.indexOf(".") != -1) {
+                return false;
+            }
+        } else {
+            //清除选中在判断
+            clearSelection(this);
 
+            var index = this.value.indexOf(".");
+            if (this.value.indexOf(".") != -1) {
+                if((this.value.length - index) > 1){
+                    return false;
+                }
+            }
+            return code == 46 || code >= 48 && code <= 57;
+        }
+    },
+    blur: function (event) {
+        if (this.value.lastIndexOf(".") == (this.value.length - 1)) {
+            this.value = this.value.substr(0, this.value.length - 1);
+        } else if (isNaN(this.value)) {
+            this.value = "";
+        }
+    },
+    paste: function (event) {
+        var s = event.originalEvent.clipboardData.getData('text');
+        if (!/\D/.test(s)) ;
+        this.value = s.replace(/^0*/, '');
+        return false;
+    },
+    dragenter: function (event) {
+        return false;
+    },
+    keyup: function (event) {
+        var index = this.value.indexOf(".");
+        if (index == -1) {
+            if (this.value.length >= 2) {
+                if (/(^0+)/.test(this.value)) this.value = this.value.replace(/^0*/, '');
+            }
+        } else {
+            if (this.value.length == 1) {
+                this.value = '';
+            }
+        }
+    }
+}, '.input-limit-money');
+//字母
 $(document).on({
     keypress: function (event) {
         var e = window.event || event,
@@ -172,6 +226,20 @@ $(document).on({
         return false;
     }
 }, '.input-limit-letter');
+//字母,数字,横线
+$(document).on({
+    keypress: function (event) {
+        var e = window.event || event,
+            code = e.keyCode || e.which;
+        return code == 45 || (code >= 48 && code <= 57) || (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+    },
+    paste: function (event) {
+        return false;
+    },
+    dragenter: function (event) {
+        return false;
+    }
+}, '.input-limit-letter-number');
 /**
  * 光标位置判断
  */
@@ -187,4 +255,14 @@ function getCursorPosition(el){
         pos = Sel.text.length - SelLength;
     }
     return pos;
+}
+
+/**
+ * 清除input选中
+ * @param dom
+ */
+function clearSelection(dom) {
+    var start = dom.selectionStart,
+        end = dom.selectionEnd;
+    dom.value = dom.value.replace(dom.value.substring(dom.selectionStart,dom.selectionEnd),'')
 }
